@@ -1,0 +1,699 @@
+考试枪托
+local v1 = game:GetService("ReplicatedStorage")
+local v2 = v1.Assets.Modules:WaitForChild("Mobile")
+local v_u_3 = require(v2:WaitForChild("Controller"))
+local v_u_4 = require(v2:WaitForChild("AimAssist"))
+local v_u_5 = require(v1.Assets.Modules:WaitForChild("ControlBindings"))
+local v6 = v1:WaitForChild("NeckSnapEvent")
+local v_u_7 = game:GetService("Players")
+local v8 = game:GetService("UserInputService")
+local v_u_9 = game:GetService("TweenService")
+local v_u_10 = game:GetService("Teams"):FindFirstChild("RAID")
+local v11 = v1:WaitForChild("BashCooldownUI")
+local v_u_12 = v1:FindFirstChild("PunchEvent")
+local v_u_13 = v_u_7.LocalPlayer
+local v_u_14 = nil
+local v_u_15 = {
+	["MPV-9"] = true,
+	["Mossberg 590A1"] = true,
+	["STF-12 [S]"] = true,
+	["SKS-45"] = true,
+	["Beanbag Shotgun"] = true,
+	["VGS-9"] = true,
+	["Lock-17 [F]"] = true,
+	["MPV-SD"] = true,
+	["IA AR-56"] = true,
+	["AR-18 \'Standard\'"] = true,
+	["AR-21"] = true,
+	["R8"] = true,
+	["RPD"] = true,
+	["P95 \'Knight\'"] = true,
+	["A9 Brigadier [F]"] = true,
+	["SMX-9"] = true,
+	["PMS-12T \'Hammer\' [S]"] = true,
+	["Lock-17"] = true,
+	["X12 \'Nullshock\'"] = true,
+	["AR-19"] = true,
+	["Lock-17 [S]"] = true,
+	["Lock-18"] = true,
+	["A9 Brigadier"] = true,
+	["Precision \'Death\'"] = true,
+	["VGS-40"] = true,
+	["AOP-9"] = true,
+	["VGS-45 \'Striker\'"] = true,
+	["Arcturus .50"] = true,
+	["Tursk R-12 \'Breakstorm\'"] = true,
+	["MPV-9x19"] = true,
+	["MPV-9x19 [S]"] = true,
+	["TASC-10"] = true,
+	["K7 \'Tempest\'"] = true,
+	["AR-19 \'Phantom\'"] = true,
+	["M16A2"] = true,
+	["Glock-18"] = true,
+	["Glock-19"] = true,
+	["AKS-74U"] = true,
+	["SRS-58"] = true,
+	["F7 Lynx"] = true,
+	["SHC-23"] = true,
+	["IB-5 Carcara"] = true,
+	["AEN-50"] = true,
+	["VGS-45"] = true,
+	["PMS-12T \'Hammer\'"] = true,
+	["AK-74M (Bayonet)"] = true,
+	["Night Stalker Old"] = true,
+	["Night Stalker"] = true,
+	["M249"] = true,
+	["AR-23"] = true,
+	["AS-VUL"] = true,
+	["AK-74"] = true,
+	["APK-74"] = true,
+	["SR-58 \'Spearhead\'"] = true,
+	["afs Shotgun"] = true,
+	["R8 Storm"] = true,
+	["CHIGU-R8"] = true,
+	["TAC-5"] = true,
+	["Night Stalker \'Luxe\'"] = true,
+	["Night Stalker \'Artisan\'"] = true,
+	["Night Stalker \'Regalia\'"] = true
+}
+local v_u_16 = {
+	["MPV-9"] = "rbxassetid://132986160862388",
+	["SMX-9"] = "rbxassetid://132986160862388",
+	["TASC-5"] = "rbxassetid://132986160862388",
+	["APK-74"] = "rbxassetid://84050213985015",
+	["Precision \'Death\'"] = "rbxassetid://132986160862388",
+	["SKS-45"] = "rbxassetid://84050213985015",
+	["AS-VUL"] = "rbxassetid://84050213985015",
+	["AKS-74U"] = "rbxassetid://84050213985015",
+	["MPV-9x19"] = "rbxassetid://132986160862388",
+	["MPV-SD"] = "rbxassetid://84050213985015",
+	["AR-18 \'Standard\'"] = "rbxassetid://132986160862388",
+	["VGS-45 \'Striker\'"] = "rbxassetid://119099679349414",
+	["P95 \'Knight\'"] = "rbxassetid://119099679349414",
+	["AR-19"] = "rbxassetid://132986160862388",
+	["afs Shotgun"] = "rbxassetid://74792106188393",
+	["M16A2"] = "rbxassetid://132986160862388",
+	["A9 Brigadier"] = "rbxassetid://74792106188393",
+	["A9 Brigadier [F]"] = "rbxassetid://74792106188393",
+	["TASC-10"] = "rbxassetid://119998944335851",
+	["Lock-17"] = "rbxassetid://74792106188393",
+	["Tursk R-12 \'Breakstorm\'"] = "rbxassetid://74792106188393",
+	["Lock-17 [S]"] = "rbxassetid://74792106188393",
+	["MPV-9x19 [S]"] = "rbxassetid://76929295689492",
+	["AR-21"] = "rbxassetid://76929295689492",
+	["IB-5 Carcara"] = "rbxassetid://76929295689492",
+	["IA AR-56"] = "rbxassetid://116750283539846",
+	["AEN-50"] = "rbxassetid://76929295689492",
+	["RPD"] = "rbxassetid://76929295689492",
+	["AK-74"] = "rbxassetid://84050213985015",
+	["Arcturus .50"] = "rbxassetid://74792106188393",
+	["F7 Lynx"] = "rbxassetid://74792106188393",
+	["Glock-19 [S]"] = "rbxassetid://74792106188393",
+	["Glock-18"] = "rbxassetid://74792106188393",
+	["AR-19 \'Phantom\'"] = "rbxassetid://70983687392228",
+	["AK-74M (Bayonet)"] = "rbxassetid://116750283539846",
+	["Night Stalker Old"] = "rbxassetid://114744562625259",
+	["Night Stalker"] = "rbxassetid://92699851028014",
+	["Night Stalker \'Luxe\'"] = "rbxassetid://92699851028014",
+	["Night Stalker \'Artisan\'"] = "rbxassetid://92699851028014",
+	["Night Stalker \'Regalia\'"] = "rbxassetid://92699851028014",
+	["Night Stalker \'Cardboard\'"] = "rbxassetid://92699851028014",
+	["PMS-12T \'Hammer\'"] = "rbxassetid://119099679349414",
+	["SRS-58"] = "rbxassetid://119099679349414",
+	["Beanbag Shotgun"] = "rbxassetid://119099679349414",
+	["X12 \'Nullshock\'"] = "rbxassetid://119099679349414",
+	["CHIGU-R8"] = "rbxassetid://119099679349414",
+	["STF-12 [S]"] = "rbxassetid://119099679349414",
+	["SHC-23"] = "rbxassetid://97981174560418",
+	["SR-58 \'Spearhead\'"] = "rbxassetid://71086373697213",
+	["AOP-9"] = "rbxassetid://121401313522611",
+	["Default"] = "rbxassetid://74792106188393"
+}
+local v_u_17 = 0
+local v_u_18 = 0
+local v_u_19 = false
+local v_u_20 = {}
+local function v_u_26(p21, p22) -- name: loadAnimation
+	-- upvalues: (copy) v_u_16
+	local v23 = p21:FindFirstChildOfClass("Humanoid")
+	if v23 then
+		local v24 = v23:FindFirstChildOfClass("Animator") or Instance.new("Animator", v23)
+		local v25 = Instance.new("Animation")
+		v25.AnimationId = v_u_16[p22] or "rbxassetid://74792106188393"
+		return v24:LoadAnimation(v25)
+	end
+end
+local function v_u_29(p27) -- name: playSwingSound
+	local v28 = Instance.new("Sound")
+	v28.SoundId = "rbxassetid://166083610"
+	v28.Volume = 1
+	v28.PlaybackSpeed = 1
+	v28.Parent = p27:FindFirstChild("HumanoidRootPart") or p27
+	v28:Play()
+	game:GetService("Debris"):AddItem(v28, 2)
+end
+local function v_u_35(p30) -- name: getCooldownBar
+	-- upvalues: (copy) v_u_13
+	local v31 = v_u_13:FindFirstChild("PlayerGui")
+	if not v31 then
+		return nil
+	end
+	local v32 = v_u_13.Character
+	if v32 then
+		v32 = v32:FindFirstChildOfClass("Tool")
+	end
+	if not v32 then
+		warn("CooldownUI: no tool equipped")
+		return nil
+	end
+	local v33 = v31:FindFirstChild(v32.Name)
+	if not v33 then
+		warn("CooldownUI gun UI ScreenGui not found. expected:", v32.Name)
+		return nil
+	end
+	local v34 = v33:FindFirstChild("Data")
+	if v34 then
+		v34 = v34:FindFirstChild("Cooldowns")
+	end
+	if v34 then
+		v34 = v34:FindFirstChild(p30)
+	end
+	if v34 then
+		v34 = v34:FindFirstChild("Bar")
+	end
+	if v34 then
+		return v34
+	end
+	warn("CooldownUI bar not found at:", v33:GetFullName(), "Data/Cooldowns/" .. p30 .. "/Bar")
+	return nil
+end
+local function v_u_40() -- name: getCooldownContainer
+	-- upvalues: (copy) v_u_13
+	local v36 = v_u_13:FindFirstChild("PlayerGui")
+	if not v36 then
+		return nil
+	end
+	local v37 = v_u_13.Character
+	if v37 then
+		v37 = v37:FindFirstChildOfClass("Tool")
+	end
+	if not v37 then
+		return nil
+	end
+	local v38 = v36:FindFirstChild(v37.Name)
+	if not v38 then
+		return nil
+	end
+	local v39 = v38:FindFirstChild("Data")
+	if v39 then
+		v39 = v39:FindFirstChild("Cooldowns")
+	end
+	return v39
+end
+local function v_u_47(p41, p42) -- name: setCooldownVisibility
+	-- upvalues: (copy) v_u_40
+	local v43 = v_u_40()
+	if v43 then
+		local v44 = v43:FindFirstChild(p41)
+		if v44 then
+			v44.Visible = p42
+		end
+		local v45 = v43:FindFirstChild("Bash")
+		if v45 then
+			v45 = v43.Bash.Visible
+		end
+		local v46 = v43:FindFirstChild("Kick")
+		if v46 then
+			v46 = v43.Kick.Visible
+		end
+		v43.Visible = (v45 or v46) and true or false
+	end
+end
+local v_u_48 = {
+	["Bash"] = nil,
+	["Kick"] = nil
+}
+local v_u_49 = 0
+local v_u_50 = {}
+local function v_u_65(p51) -- name: resetFade
+	for _, v_u_52 in ipairs(p51:GetDescendants()) do
+		if v_u_52:IsA("Frame") then
+			local v_u_53 = v_u_52:GetAttribute("_cd_BackgroundTransparency")
+			if v_u_53 ~= nil then
+				local v_u_54 = "BackgroundTransparency"
+				pcall(function()
+					-- upvalues: (copy) v_u_52, (copy) v_u_54, (copy) v_u_53
+					v_u_52[v_u_54] = v_u_53
+				end)
+			end
+		elseif v_u_52:IsA("ImageLabel") or v_u_52:IsA("ImageButton") then
+			local v_u_55 = v_u_52:GetAttribute("_cd_ImageTransparency")
+			if v_u_55 ~= nil then
+				local v_u_56 = "ImageTransparency"
+				pcall(function()
+					-- upvalues: (copy) v_u_52, (copy) v_u_56, (copy) v_u_55
+					v_u_52[v_u_56] = v_u_55
+				end)
+			end
+			local v_u_57 = v_u_52:GetAttribute("_cd_BackgroundTransparency")
+			if v_u_57 ~= nil then
+				local v_u_58 = "BackgroundTransparency"
+				pcall(function()
+					-- upvalues: (copy) v_u_52, (copy) v_u_58, (copy) v_u_57
+					v_u_52[v_u_58] = v_u_57
+				end)
+			end
+		elseif v_u_52:IsA("TextLabel") or (v_u_52:IsA("TextButton") or v_u_52:IsA("TextBox")) then
+			local v_u_59 = v_u_52:GetAttribute("_cd_TextTransparency")
+			if v_u_59 ~= nil then
+				local v_u_60 = "TextTransparency"
+				pcall(function()
+					-- upvalues: (copy) v_u_52, (copy) v_u_60, (copy) v_u_59
+					v_u_52[v_u_60] = v_u_59
+				end)
+			end
+			local v_u_61 = v_u_52:GetAttribute("_cd_BackgroundTransparency")
+			if v_u_61 ~= nil then
+				local v_u_62 = "BackgroundTransparency"
+				pcall(function()
+					-- upvalues: (copy) v_u_52, (copy) v_u_62, (copy) v_u_61
+					v_u_52[v_u_62] = v_u_61
+				end)
+			end
+		elseif v_u_52:IsA("UIStroke") then
+			local v_u_63 = v_u_52:GetAttribute("_cd_Transparency")
+			if v_u_63 ~= nil then
+				local v_u_64 = "Transparency"
+				pcall(function()
+					-- upvalues: (copy) v_u_52, (copy) v_u_64, (copy) v_u_63
+					v_u_52[v_u_64] = v_u_63
+				end)
+			end
+		end
+	end
+end
+local function v_u_88(p66, p67) -- name: fadeOut
+	-- upvalues: (copy) v_u_9
+	local v68 = TweenInfo.new(p67, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+	for _, v_u_69 in ipairs(p66:GetDescendants()) do
+		if v_u_69:IsA("Frame") then
+			if v_u_69:GetAttribute("_cd_BackgroundTransparency") == nil then
+				local v_u_70 = "BackgroundTransparency"
+				local v71, v72 = pcall(function()
+					-- upvalues: (copy) v_u_69, (copy) v_u_70
+					return v_u_69[v_u_70]
+				end)
+				if v71 then
+					v_u_69:SetAttribute("_cd_BackgroundTransparency", v72)
+				end
+			end
+			v_u_9:Create(v_u_69, v68, {
+				["BackgroundTransparency"] = 1
+			}):Play()
+		elseif v_u_69:IsA("ImageLabel") or v_u_69:IsA("ImageButton") then
+			if v_u_69:GetAttribute("_cd_ImageTransparency") == nil then
+				local v_u_73 = "ImageTransparency"
+				local v74, v75 = pcall(function()
+					-- upvalues: (copy) v_u_69, (copy) v_u_73
+					return v_u_69[v_u_73]
+				end)
+				if v74 then
+					v_u_69:SetAttribute("_cd_ImageTransparency", v75)
+				end
+			end
+			if v_u_69:GetAttribute("_cd_BackgroundTransparency") == nil then
+				local v_u_76 = "BackgroundTransparency"
+				local v77, v78 = pcall(function()
+					-- upvalues: (copy) v_u_69, (copy) v_u_76
+					return v_u_69[v_u_76]
+				end)
+				if v77 then
+					v_u_69:SetAttribute("_cd_BackgroundTransparency", v78)
+				end
+			end
+			v_u_9:Create(v_u_69, v68, {
+				["ImageTransparency"] = 1,
+				["BackgroundTransparency"] = 1
+			}):Play()
+		elseif v_u_69:IsA("TextLabel") or (v_u_69:IsA("TextButton") or v_u_69:IsA("TextBox")) then
+			if v_u_69:GetAttribute("_cd_TextTransparency") == nil then
+				local v_u_79 = "TextTransparency"
+				local v80, v81 = pcall(function()
+					-- upvalues: (copy) v_u_69, (copy) v_u_79
+					return v_u_69[v_u_79]
+				end)
+				if v80 then
+					v_u_69:SetAttribute("_cd_TextTransparency", v81)
+				end
+			end
+			if v_u_69:GetAttribute("_cd_BackgroundTransparency") == nil then
+				local v_u_82 = "BackgroundTransparency"
+				local v83, v84 = pcall(function()
+					-- upvalues: (copy) v_u_69, (copy) v_u_82
+					return v_u_69[v_u_82]
+				end)
+				if v83 then
+					v_u_69:SetAttribute("_cd_BackgroundTransparency", v84)
+				end
+			end
+			v_u_9:Create(v_u_69, v68, {
+				["TextTransparency"] = 1,
+				["BackgroundTransparency"] = 1
+			}):Play()
+		elseif v_u_69:IsA("UIStroke") then
+			if v_u_69:GetAttribute("_cd_Transparency") == nil then
+				local v_u_85 = "Transparency"
+				local v86, v87 = pcall(function()
+					-- upvalues: (copy) v_u_69, (copy) v_u_85
+					return v_u_69[v_u_85]
+				end)
+				if v86 then
+					v_u_69:SetAttribute("_cd_Transparency", v87)
+				end
+			end
+			v_u_9:Create(v_u_69, v68, {
+				["Transparency"] = 1
+			}):Play()
+		end
+	end
+end
+local function v_u_97(p_u_89, p90, p91) -- name: playCooldown
+	-- upvalues: (ref) v_u_49, (copy) v_u_35, (copy) v_u_40, (copy) v_u_65, (copy) v_u_50, (copy) v_u_9, (copy) v_u_47, (copy) v_u_48, (copy) v_u_88
+	local v92 = p91 or 0
+	local v_u_93 = v_u_49
+	local v_u_94 = v_u_35(p_u_89)
+	if v_u_94 then
+		local v_u_95 = v_u_40()
+		if v_u_95 then
+			v_u_95 = v_u_95:FindFirstChild(p_u_89)
+		end
+		if v_u_95 then
+			v_u_65(v_u_95)
+		end
+		if v_u_50[p_u_89] then
+			v_u_50[p_u_89]:Cancel()
+			v_u_50[p_u_89] = nil
+		end
+		v_u_94.AnchorPoint = Vector2.new(0, 1)
+		v_u_94.Position = UDim2.new(0, 0, 1, 0)
+		v_u_94.Size = UDim2.new(1, 0, math.clamp(v92, 0, 1), 0)
+		v_u_94.Visible = true
+		local v_u_96 = v_u_9:Create(v_u_94, TweenInfo.new(p90, Enum.EasingStyle.Linear, Enum.EasingDirection.Out), {
+			["Size"] = UDim2.new(1, 0, 1, 0)
+		})
+		v_u_50[p_u_89] = v_u_96
+		v_u_47(p_u_89, true)
+		v_u_96:Play()
+		v_u_96.Completed:Connect(function()
+			-- upvalues: (copy) v_u_93, (ref) v_u_49, (ref) v_u_50, (copy) p_u_89, (copy) v_u_96, (ref) v_u_48, (copy) v_u_95, (ref) v_u_88, (copy) v_u_94, (ref) v_u_47, (ref) v_u_65
+			if v_u_93 == v_u_49 then
+				if v_u_50[p_u_89] == v_u_96 then
+					v_u_50[p_u_89] = nil
+					v_u_48[p_u_89] = nil
+					if v_u_95 then
+						v_u_88(v_u_95, 0.2)
+					end
+					task.delay(0.2, function()
+						-- upvalues: (ref) v_u_93, (ref) v_u_49, (ref) v_u_94, (ref) v_u_47, (ref) p_u_89, (ref) v_u_95, (ref) v_u_65
+						if v_u_93 == v_u_49 then
+							v_u_94.Visible = false
+							v_u_47(p_u_89, false)
+							if v_u_95 then
+								v_u_65(v_u_95)
+							end
+						end
+					end)
+				end
+			else
+				return
+			end
+		end)
+	end
+end
+local function v_u_105(p98) -- name: renderCooldown
+	-- upvalues: (copy) v_u_48, (copy) v_u_47, (copy) v_u_97
+	local v99 = v_u_48[p98]
+	if v99 then
+		local v100 = tick()
+		local v101 = v99.finish - v100
+		if v101 <= 0 then
+			v_u_48[p98] = nil
+			v_u_47(p98, false)
+		else
+			local v102 = v100 - v99.start
+			local v103
+			if v99.duration > 0 then
+				local v104 = v102 / v99.duration
+				v103 = math.clamp(v104, 0, 1)
+			else
+				v103 = 0
+			end
+			v_u_97(p98, v101, v103)
+		end
+	else
+		v_u_47(p98, false)
+		return
+	end
+end
+local function v_u_108() -- name: renderAllCooldowns
+	-- upvalues: (ref) v_u_49, (copy) v_u_50, (copy) v_u_105
+	v_u_49 = v_u_49 + 1
+	for v106, v107 in pairs(v_u_50) do
+		if v107 then
+			v107:Cancel()
+		end
+		v_u_50[v106] = nil
+	end
+	v_u_105("Bash")
+	v_u_105("Kick")
+end
+local v109 = v6.OnClientEvent:Connect(function(_)
+	-- upvalues: (ref) v_u_14
+	if v_u_14 and v_u_14.IsPlaying then
+		v_u_14:Stop()
+	end
+end)
+table.insert(v_u_20, v109)
+local v115 = v11.OnClientEvent:Connect(function(p110, p111)
+	-- upvalues: (copy) v_u_48, (copy) v_u_108
+	local v112 = p110 == "bash" and "Bash" or p110
+	local v113 = v112 == "kick" and "Kick" or v112
+	local v114 = tick()
+	v_u_48[v113] = {
+		["start"] = v114,
+		["duration"] = p111,
+		["finish"] = v114 + p111
+	}
+	v_u_108()
+end)
+table.insert(v_u_20, v115)
+local function v_u_124() -- name: onAttack
+	-- upvalues: (copy) v_u_13, (ref) v_u_17, (copy) v_u_15, (ref) v_u_18, (ref) v_u_19, (copy) v_u_12, (ref) v_u_14, (copy) v_u_26, (copy) v_u_29
+	local v116 = v_u_13.Character
+	if v116 then
+		v116 = v116:GetAttribute("FelsiBashDisabled") == true
+	end
+	if v116 then
+		return
+	else
+		local v117 = tick()
+		if v117 - v_u_17 < 0.1 then
+			return
+		else
+			v_u_17 = v117
+			local v118 = v_u_13.Character
+			local v119 = v118 and v118:FindFirstChildOfClass("Tool")
+			if v119 then
+				v119 = v_u_15[v119.Name]
+			end
+			if v119 then
+				local v120 = v_u_13.Character
+				if v120 then
+					local v121 = v117 - v_u_18
+					if v_u_19 and v121 <= 2 then
+						local v122 = v_u_13.Character
+						if v122 then
+							v122 = v122:GetAttribute("FelsiBashDisabled") == true
+						end
+						if not v122 then
+							v_u_12:FireServer()
+						end
+					elseif v121 < 5.1 then
+						return
+					else
+						v_u_18 = v117
+						v_u_19 = true
+						task.delay(2, function()
+							-- upvalues: (ref) v_u_19, (ref) v_u_18
+							if v_u_19 and tick() - v_u_18 >= 2 then
+								v_u_19 = false
+							end
+						end)
+						if not (v_u_14 and v_u_14.IsPlaying) then
+							local v123 = v120:FindFirstChildOfClass("Tool")
+							v_u_14 = v_u_26(v120, v123 and v123.Name or "Default")
+							if v_u_14 then
+								v_u_14:Play()
+								v_u_29(v120)
+								v_u_14.Stopped:Connect(function()
+									-- upvalues: (ref) v_u_14
+									task.wait(0.1)
+									v_u_14 = nil
+								end)
+							end
+							v_u_12:FireServer()
+						end
+					end
+				else
+					return
+				end
+			else
+				return
+			end
+		end
+	end
+end
+local function v_u_132(p125, p126, p127) -- name: isValidAutoBashTarget
+	-- upvalues: (copy) v_u_7, (copy) v_u_13, (copy) v_u_10
+	if p125 then
+		p125 = p125:FindFirstChild("HumanoidRootPart")
+	end
+	local v128
+	if p126 then
+		v128 = p126:FindFirstChild("HumanoidRootPart")
+	else
+		v128 = p126
+	end
+	if not (p125 and (v128 and p127)) then
+		return false
+	end
+	local v129 = v_u_7:GetPlayerFromCharacter(p126)
+	if v129 then
+		if v_u_13.Team == v129.Team then
+			return false
+		end
+		if not v_u_10 or v_u_13.Team ~= v_u_10 and v129.Team ~= v_u_10 then
+			return false
+		end
+	end
+	local v130 = (v128.Position - p125.Position).Magnitude
+	local v131 = p127.Name
+	return v130 <= ((v131 == "AR-19 \'Phantom\'" or (v131 == "IA AR-56" or v131 == "SR-58 \'Spearhead\'")) and 9.7 or 6.7) - 0.15
+end
+local v_u_133 = { 0, -0.04, 0.04 }
+local function v_u_143(p134, p135, p136) -- name: findAutoBashTarget
+	-- upvalues: (copy) v_u_133, (copy) v_u_4, (copy) v_u_132
+	local v137
+	if p136 then
+		local v138 = p136.Name
+		v137 = (v138 == "AR-19 \'Phantom\'" or (v138 == "IA AR-56" or v138 == "SR-58 \'Spearhead\'")) and 9.7 or 6.7 or 6.7
+	else
+		v137 = 6.7
+	end
+	local v139 = p135.ViewportSize
+	for _, v140 in ipairs(v_u_133) do
+		local v141 = p135:ViewportPointToRay(v139.X * (0.5 + v140), v139.Y * 0.5)
+		local v142 = v_u_4.GetDirectTarget(p135.CFrame.Position, v141.Direction, v137 + 2)
+		if v142 and v_u_132(p134, v142, p136) then
+			return v142
+		end
+	end
+	return nil
+end
+task.spawn(function()
+	-- upvalues: (copy) v_u_3, (copy) v_u_13, (ref) v_u_19, (ref) v_u_18, (copy) v_u_15, (copy) v_u_143, (copy) v_u_124
+	while script.Parent do
+		task.wait(0.1)
+		local v144
+		if v_u_3.IsMobileClient() then
+			v144 = v_u_13:FindFirstChild("ClientSettings")
+			if v144 then
+				v144 = v144:FindFirstChild("Mobile")
+			end
+			if v144 then
+				v144 = v144:GetAttribute("AutoBashEnabled") == true
+			end
+		else
+			v144 = false
+		end
+		if v144 and (not v_u_19 and tick() - v_u_18 >= 5.1) then
+			local v145 = v_u_13.Character
+			if v145 then
+				v145 = v145:GetAttribute("FelsiBashDisabled") == true
+			end
+			if not v145 then
+				local v146 = v_u_13.Character
+				local v147 = v146 and v146:FindFirstChildOfClass("Tool")
+				if v147 then
+					v147 = v_u_15[v147.Name]
+				end
+				if v147 then
+					local v148 = v_u_13.Character
+					local v149
+					if v148 then
+						v149 = v148:FindFirstChildOfClass("Humanoid")
+					else
+						v149 = v148
+					end
+					local v150 = workspace.CurrentCamera
+					if v148 and (v149 and (v149.Health > 0 and (v150 and v_u_143(v148, v150, (v148:FindFirstChildOfClass("Tool")))))) then
+						v_u_124()
+					end
+				end
+			end
+		end
+	end
+end)
+local v153 = v8.InputBegan:Connect(function(p151, p152)
+	-- upvalues: (copy) v_u_5, (copy) v_u_124
+	if not p152 or p151.UserInputType.Name:match("^Gamepad") ~= nil then
+		if v_u_5.Matches(p151, "Bash") then
+			v_u_124()
+		end
+	end
+end)
+table.insert(v_u_20, v153)
+local v156 = v_u_3.Connect(function(p154, p155)
+	-- upvalues: (copy) v_u_124
+	if p154 == "Bash" and p155 == "Begin" then
+		v_u_124()
+	end
+end)
+table.insert(v_u_20, v156)
+script.Destroying:Connect(function()
+	-- upvalues: (copy) v_u_20
+	for _, v157 in ipairs(v_u_20) do
+		v157:Disconnect()
+	end
+	table.clear(v_u_20)
+end)
+local function v_u_165(p158) -- name: hookToolSwap
+	-- upvalues: (copy) v_u_108, (copy) v_u_20
+	local v160 = p158.ChildAdded:Connect(function(p159)
+		-- upvalues: (ref) v_u_108
+		if p159:IsA("Tool") then
+			task.defer(v_u_108)
+		end
+	end)
+	local v161 = v_u_20
+	table.insert(v161, v160)
+	local v163 = p158.ChildRemoved:Connect(function(p162)
+		-- upvalues: (ref) v_u_108
+		if p162:IsA("Tool") then
+			task.defer(v_u_108)
+		end
+	end)
+	local v164 = v_u_20
+	table.insert(v164, v163)
+end
+if v_u_13.Character then
+	v_u_165(v_u_13.Character)
+	task.defer(v_u_108)
+end
+local v167 = v_u_13.CharacterAdded:Connect(function(p166)
+	-- upvalues: (copy) v_u_165, (copy) v_u_108
+	v_u_165(p166)
+	task.defer(v_u_108)
+end)
+table.insert(v_u_20, v167)
+
